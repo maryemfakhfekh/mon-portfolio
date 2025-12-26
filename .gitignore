@@ -1,0 +1,24 @@
+# Node modules
+node_modules/
+
+# Build et distribution
+dist/
+build/
+
+# Variables d'environnement
+.env
+.env.local
+.env.*
+
+# Mac et logs
+.DS_Store
+npm-debug.log
+yarn-debug.log
+yarn-error.log*
+
+# Fichiers Vite
+.vite/
+
+# IDE
+.idea/
+.vscode/

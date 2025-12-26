@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/* On enlève le centrage de Vite */
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fond global clair, légèrement “papier” */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #f3f4f6 0, #ded8cc 55%);
+}
+
+/* --------- THEME MARYEM (réutilisable partout) --------- */
+
+/* Zone principale d'une page */
+.page-bg {
+  min-height: calc(100vh - 3.5rem); /* hauteur d'écran - navbar */
+  padding: 2rem 1rem 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Grande carte type CV */
+.cv-card {
+  width: 100%;
+  max-width: 1040px;
+  background: #f6f3ee;              /* beige doux */
+  border-radius: 32px;
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 0.25);
+  padding: 2.5rem 2rem;
+}
+
+/* Titres de section (Éducation, Projets, etc.) */
+.cv-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #111827;
+  margin-bottom: 0.75rem;
+}
+
+/* Petite barre de couleur sous les titres */
+.cv-section-underline {
+  width: 48px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0f766e, #38bdf8);
+  margin-bottom: 1rem;
+}
+
+/* Pastilles “badge” */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+/* Tags de skills/projets */
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: #e5e7eb;
+  color: #111827;
+}
+
+/* Barre de niveau (Langues, Logiciels…) */
+.level-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+.level-bar-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #0f766e, #22c55e);
+}
+
+/* Liens avec petit soulignement animé */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: #0f766e;
+  transition: width 0.2s ease;
+}
+.link-underline:hover::after {
+  width: 100%;
+}

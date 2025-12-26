@@ -1,0 +1,63 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "title": "21POS - Gestion de point de vente",
+      "description": "Application mobile et web pour la gestion des ventes et du stock.",
+      "techStack": [
+        "React",
+        "Node.js",
+        "MySQL"
+      ],
+      "githubUrl": "https://github.com/ton-compte/21pos",
+      "liveUrl": "https://21pos.tn",
+      "status": "online"
+    },
+    {
+      "id": "2",
+      "title": "Portfolio 3D Architecture",
+      "description": "Visualisation 3D de façades et d'intérieurs pour clients immobiliers.",
+      "techStack": [
+        "React",
+        "Three.js"
+      ],
+      "githubUrl": "https://github.com/ton-compte/archi-3d",
+      "liveUrl": null,
+      "status": "in-progress"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@21c-digital.com",
+      "password": "admin123",
+      "name": "Admin 21C",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "email": "user@21c-digital.com",
+      "password": "user123",
+      "name": "User 21C",
+      "role": "user"
+    }
+  ],
+  "formSubmissions": [
+    {
+      "id": "a33a",
+      "name": "hana sellami",
+      "email": "ismailsellami700@gmail.com",
+      "message": "HHHHHHHHHHHHHHHHHHHHHHHHH",
+      "status": "nouveau",
+      "date": "2025-12-25T21:55:06.365Z"
+    },
+    {
+      "id": "8a48",
+      "name": "HANAAAAAAAAA",
+      "email": "hana.sellami@iit.ens.tn",
+      "message": "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+      "status": "in-progress",
+      "date": "2025-12-25T22:28:18.955Z"
+    }
+  ]
+}
