@@ -1,91 +1,108 @@
+// src/components/Admin/Statistics.jsx
 import { useEffect, useState } from 'react';
-import axiosClient from '../../api/axiosClient';
+import { getProjects } from '../../api/projectsApi';
+import { getFormSubmissions } from '../../api/formSubmissionsApi';
+import { getUsers } from '../../api/usersApi';
 
 function AdminStatistics() {
   const [stats, setStats] = useState({
-    users: 0,
-    admins: 0,
-    projects: 0,
-    onlineProjects: 0,
-    messages: 0,
+    users: 0, admins: 0, projects: 0, onlineProjects: 0, messages: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    async function fetchStats() {
       try {
-        const [usersRes, projectsRes, messagesRes] = await Promise.all([
-          axiosClient.get('/users'),
-          axiosClient.get('/projects'),
-          axiosClient.get('/formSubmissions'),
+        const [users, projects, messages] = await Promise.all([
+          getUsers(),
+          getProjects(),
+          getFormSubmissions(),
         ]);
-
-        const users = usersRes.data;
-        const projects = projectsRes.data;
-        const messages = messagesRes.data;
-
         setStats({
           users: users.length,
-          admins: users.filter(u => u.role === 'admin').length,
+          admins: users.filter((u) => u.role === 'admin').length,
           projects: projects.length,
-          onlineProjects: projects.filter(p => p.status === 'online').length,
+          onlineProjects: projects.filter((p) => p.status === 'online').length,
           messages: messages.length,
         });
-        setError(null);
       } catch (err) {
-        setError('Impossible de charger les statistiques. Vérifie que json-server tourne.');
-        console.error(err);
+        setError('Impossible de charger les statistiques.');
       } finally {
         setLoading(false);
       }
-    };
-
+    }
     fetchStats();
   }, []);
 
-  const publicationRate = stats.projects > 0 
-    ? Math.round((stats.onlineProjects / stats.projects) * 100) 
+  const publicationRate = stats.projects > 0
+    ? Math.round((stats.onlineProjects / stats.projects) * 100)
     : 0;
 
   const statsData = [
-    { label: 'Total Utilisateurs', value: stats.users },
-    { label: 'Administrateurs', value: stats.admins },
-    { label: 'Projets Total', value: stats.projects },
-    { label: 'Projets en ligne', value: stats.onlineProjects },
-    { label: 'Messages de contact', value: stats.messages },
-    { label: 'Taux de publication', value: `${publicationRate}%` },
+    { label: 'Total Utilisateurs', value: stats.users, icon: '👥', color: '#0d9488' },
+    { label: 'Administrateurs', value: stats.admins, icon: '🔐', color: '#0369a1' },
+    { label: 'Projets Total', value: stats.projects, icon: '📁', color: '#7c3aed' },
+    { label: 'Projets en ligne', value: stats.onlineProjects, icon: '🌐', color: '#065f46' },
+    { label: 'Messages reçus', value: stats.messages, icon: '✉️', color: '#b45309' },
+    { label: 'Taux de publication', value: `${publicationRate}%`, icon: '📊', color: '#be185d' },
   ];
 
   return (
-    <div className="space-y-12">
-      <h1 className="text-4xl md:text-5xl font-bold text-textPrimary font-display text-center">
-        Statistiques Globales
-      </h1>
+    <div style={styles.page}>
+      <h1 style={styles.title}>Statistiques Globales</h1>
 
       {error && (
-        <div className="bg-red-900/20 backdrop-blur-sm border border-red-800/50 text-red-600 px-8 py-6 rounded-2xl shadow-lg text-center">
-          <p className="font-medium text-lg">{error}</p>
-        </div>
+        <div style={styles.errorBox}>{error}</div>
       )}
 
       {loading ? (
-        <p className="text-textSecondary text-center py-16 text-2xl">Chargement des statistiques...</p>
+        <p style={{ color: '#94a3b8', textAlign: 'center', padding: '40px 0' }}>
+          Chargement…
+        </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {statsData.map((stat, idx) => (
-            <div
-              key={idx}
-              className="bg-glass/70 backdrop-blur-lg border border-glass-border rounded-3xl p-10 shadow-lg hover:shadow-xl transition-all text-center hover:scale-105"
-            >
-              <h3 className="text-textSecondary text-xl mb-6">{stat.label}</h3>
-              <p className="text-6xl font-bold text-[#0F766E]">{stat.value}</p>
+        <div style={styles.grid}>
+          {statsData.map((stat) => (
+            <div key={stat.label} style={styles.card} className="stat-card">
+              <div style={{ ...styles.iconBox, background: stat.color + '15' }}>
+                <span style={{ fontSize: 26 }}>{stat.icon}</span>
+              </div>
+              <p style={{ ...styles.value, color: stat.color }}>{stat.value}</p>
+              <p style={styles.label}>{stat.label}</p>
             </div>
           ))}
         </div>
       )}
+
+      <style>{`.stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1) !important; }`}</style>
     </div>
   );
 }
+
+const styles = {
+  page: { padding: '8px 0' },
+  title: { fontSize: 26, fontWeight: 700, color: '#0f172a', marginBottom: 32 },
+  errorBox: {
+    background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626',
+    padding: '14px 20px', borderRadius: 12, marginBottom: 24, fontSize: 14,
+  },
+  grid: {
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+    gap: 18,
+  },
+  card: {
+    background: 'white', border: '1px solid #e2e8f0', borderRadius: 16,
+    padding: '28px 20px', textAlign: 'center',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+    transition: 'transform 0.22s, box-shadow 0.22s',
+  },
+  iconBox: {
+    width: 52, height: 52, borderRadius: 14,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    margin: '0 auto 14px',
+  },
+  value: { fontSize: 36, fontWeight: 800, lineHeight: 1, marginBottom: 8 },
+  label: { fontSize: 12, color: '#94a3b8', fontWeight: 500 },
+};
 
 export default AdminStatistics;

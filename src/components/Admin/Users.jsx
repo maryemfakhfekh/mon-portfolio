@@ -1,102 +1,68 @@
+// src/components/Admin/Users.jsx
 import { useEffect, useState } from 'react';
-import axiosClient from '../../api/axiosClient';
+import { getUsers } from '../../api/usersApi';
 
 function UsersAdminPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axiosClient.get('/users');
-        setUsers(response.data);
-        setError(null);
-      } catch (err) {
-        setError('Impossible de charger les utilisateurs. Vérifie que "npm run api" tourne et que db.json contient "users".');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
+    async function load() {
+      const data = await getUsers();
+      setUsers(data);
+      setLoading(false);
+    }
+    load();
   }, []);
 
-  const filteredUsers = users.filter(user =>
-    user.name?.toLowerCase().includes(search.toLowerCase()) ||
-    user.email?.toLowerCase().includes(search.toLowerCase())
+  const filtered = users.filter(
+    (u) =>
+      u.name?.toLowerCase().includes(search.toLowerCase()) ||
+      u.email?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div className="space-y-10">
-      <h1 className="text-4xl md:text-5xl font-bold text-textPrimary font-display text-center">
-  Gestion des Utilisateurs
-</h1>
+    <div style={styles.page}>
+      <h1 style={styles.title}>Gestion des Utilisateurs</h1>
 
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Rechercher par nom ou email…"
+        style={styles.search}
+      />
 
-      {/* Barre de recherche */}
-      <div className="flex justify-center md:justify-start">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Rechercher par nom ou email..."
-          className="w-full max-w-md px-6 py-4 bg-glass/50 backdrop-blur-md border border-glass-border rounded-3xl text-textPrimary placeholder-textSecondary/60 focus:outline-none focus:ring-2 focus:ring-accentPink/50 focus:border-accentPink transition-all shadow-md"
-        />
-      </div>
-
-      {/* Message d'erreur */}
-      {error && (
-        <div className="bg-red-900/20 backdrop-blur-sm border border-red-800/50 text-red-600 px-8 py-5 rounded-2xl shadow-lg">
-          <p className="font-medium">{error}</p>
-        </div>
-      )}
-
-      {/* Chargement */}
       {loading ? (
-        <p className="text-textSecondary text-center py-12 text-xl">Chargement des utilisateurs...</p>
-      ) : filteredUsers.length === 0 ? (
-        <div className="bg-glass/50 backdrop-blur-md border border-glass-border rounded-3xl p-16 text-center shadow-lg">
-          <p className="text-textSecondary text-xl">Aucun utilisateur trouvé.</p>
-          <p className="text-textSecondary/70 text-sm mt-4">
-            Ajoute des utilisateurs dans db.json ou vérifie la connexion API.
-          </p>
+        <p style={{ color: '#94a3b8', padding: '32px 0', textAlign: 'center' }}>Chargement…</p>
+      ) : filtered.length === 0 ? (
+        <div style={styles.empty}>
+          <p style={{ color: '#64748b' }}>Aucun utilisateur trouvé.</p>
         </div>
       ) : (
-        /* Tableau stylisé */
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-glass/50 backdrop-blur-lg border border-glass-border rounded-3xl shadow-lg overflow-hidden">
-            <thead className="bg-glass/30">
-              <tr>
-                <th className="px-8 py-4 text-left text-sm font-semibold text-textSecondary uppercase tracking-wide">
-                  Nom
-                </th>
-                <th className="px-8 py-4 text-left text-sm font-semibold text-textSecondary uppercase tracking-wide">
-                  Email
-                </th>
-                <th className="px-8 py-4 text-left text-sm font-semibold text-textSecondary uppercase tracking-wide">
-                  Rôle
-                </th>
+        <div style={styles.tableWrap}>
+          <table style={styles.table}>
+            <thead>
+              <tr style={styles.thead}>
+                <th style={styles.th}>Nom</th>
+                <th style={styles.th}>Email</th>
+                <th style={styles.th}>Rôle</th>
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((user) => (
-                <tr
-                  key={user.id}
-                  className="hover:bg-glass/20 transition-colors cursor-pointer"
-                >
-                  <td className="px-8 py-4 text-textPrimary font-medium">{user.name || 'Non défini'}</td>
-                  <td className="px-8 py-4 text-textSecondary">{user.email}</td>
-                  <td className="px-8 py-4">
-                    <span
-                      className={`px-4 py-2 inline-flex text-xs font-semibold rounded-full border transition-colors ${
-                        user.role === 'admin'
-                          ? 'bg-[#0F766E]/20 text-[#0F766E] border-[#0F766E]/50'
-                          : 'bg-amber-300/20 text-amber-700 border-amber-300/50'
-                      }`}
-                    >
-                      {user.role === 'admin' ? 'Administrateur' : 'Utilisateur'}
+              {filtered.map((user) => (
+                <tr key={user.id} style={styles.tr} className="user-row">
+                  <td style={styles.tdBold}>{user.name || 'Non défini'}</td>
+                  <td style={styles.td}>{user.email}</td>
+                  <td style={styles.td}>
+                    <span style={{
+                      ...styles.roleBadge,
+                      background: user.role === 'admin' ? '#f0fdf4' : '#eff6ff',
+                      color: user.role === 'admin' ? '#065f46' : '#1e40af',
+                      borderColor: user.role === 'admin' ? '#bbf7d0' : '#bfdbfe',
+                    }}>
+                      {user.role === 'admin' ? '🔐 Administrateur' : '👤 Utilisateur'}
                     </span>
                   </td>
                 </tr>
@@ -105,8 +71,44 @@ function UsersAdminPage() {
           </table>
         </div>
       )}
+
+      <style>{`.user-row:hover { background: #f8fafc; }`}</style>
     </div>
   );
 }
+
+const styles = {
+  page: { padding: '8px 0' },
+  title: { fontSize: 26, fontWeight: 700, color: '#0f172a', marginBottom: 24 },
+  search: {
+    width: '100%', maxWidth: 380, padding: '10px 16px',
+    border: '1.5px solid #e2e8f0', borderRadius: 10, fontSize: 14,
+    fontFamily: 'inherit', outline: 'none', marginBottom: 24,
+    display: 'block',
+  },
+  empty: {
+    background: 'white', border: '1px solid #e2e8f0',
+    borderRadius: 14, padding: '40px', textAlign: 'center',
+  },
+  tableWrap: {
+    background: 'white', border: '1px solid #e2e8f0',
+    borderRadius: 16, overflow: 'hidden',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+  },
+  table: { width: '100%', borderCollapse: 'collapse' },
+  thead: { background: '#f8fafc', borderBottom: '1px solid #e2e8f0' },
+  th: {
+    padding: '12px 20px', textAlign: 'left', fontSize: 11, fontWeight: 700,
+    textTransform: 'uppercase', letterSpacing: '0.06em', color: '#94a3b8',
+  },
+  tr: { borderBottom: '1px solid #f1f5f9', transition: 'background 0.15s' },
+  td: { padding: '14px 20px', fontSize: 14, color: '#475569' },
+  tdBold: { padding: '14px 20px', fontSize: 14, color: '#0f172a', fontWeight: 600 },
+  roleBadge: {
+    display: 'inline-flex', alignItems: 'center', gap: 5,
+    padding: '4px 12px', borderRadius: 100, fontSize: 12,
+    fontWeight: 600, border: '1px solid',
+  },
+};
 
 export default UsersAdminPage;

@@ -1,29 +1,15 @@
 // src/api/authApi.js
-import axiosClient from './axiosClient';
-// Auth très simple pour atelier (NE PAS faire en prod tel quel)
-export async function loginWithJson(email, password) {
-// On filtre par email + password dans le JSON
-const res = await axiosClient.get('/users', {
-params: { email, password },
-});
-const users = res.data;
-if (!users || users.length === 0) {
-throw new Error('Email ou mot de passe invalide');
-}
-const user = users[0];
-// On simule un "token" simple (ici juste l'id + timestamp)
-const fakeToken =
-`
-user-${user.id}-${Date.now()}`
-;
+import { loginUser } from './localData';
 
-return {
-token: fakeToken,
-user: {
-id: user.id,
-name: user.name,
-email: user.email,
-role: user.role,
-},
-};
+export async function loginWithJson(email, password) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      try {
+        const result = loginUser(email, password);
+        resolve(result);
+      } catch (err) {
+        reject(err);
+      }
+    }, 300);
+  });
 }

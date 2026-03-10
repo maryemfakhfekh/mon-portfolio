@@ -1,25 +1,23 @@
 // src/api/projectsApi.js
-
-import axiosClient from './axiosClient';
-
-const RESOURCE = '/projects';
+import {
+  getProjects as _getProjects,
+  createProject as _createProject,
+  updateProject as _updateProject,
+  deleteProject as _deleteProject,
+} from './localData';
 
 export async function getProjects() {
-  const res = await axiosClient.get(RESOURCE);
-  return res.data;
+  return _getProjects();
 }
 
 export async function createProject(project) {
-  const res = await axiosClient.post(RESOURCE, project);
-  return res.data;
+  return _createProject(project);
 }
 
 export async function updateProject(id, project) {
-  const res = await axiosClient.put(`${RESOURCE}/${id}`, project);
-  return res.data;
+  return _updateProject(id, project);
 }
 
 export async function deleteProject(id) {
-  await axiosClient.delete(`${RESOURCE}/${id}`);
-  return true;
+  return _deleteProject(id);
 }

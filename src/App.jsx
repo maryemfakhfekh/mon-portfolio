@@ -16,12 +16,12 @@ import AdminDashboard from './components/Admin/Dashboard';
 import AdminUsers from './components/Admin/Users';
 import AdminAnalytics from './components/Admin/Statistics';
 import AdminSettings from './components/Admin/Settings';
+import AdminFormSubmissions from './components/Admin/AdminFormSubmissions.jsx';
 
 // Auth
 import ProtectedRoute from './components/Admin/ProtectedRoute';
 import Logout from './components/Auth/Logout.jsx';
 import Login from './components/Auth/Login.jsx';
-import AdminFormSubmissions from './components/Admin/AdminFormSubmissions.jsx';
 
 // 404
 function NotFound() {
@@ -30,7 +30,7 @@ function NotFound() {
       <div className="text-center">
         <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
         <p className="text-xl text-gray-600 mb-8">Page non trouvée</p>
-        <a href="/" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+        <a href="/" className="bg-[#0F766E] text-white px-6 py-3 rounded-lg hover:bg-[#0D6658]">
           Retour à l'accueil
         </a>
       </div>
@@ -74,12 +74,10 @@ function App() {
         <Route path="forms" element={<AdminFormSubmissions />} />
       </Route>
 
-
       <Route path="/logout" element={<Logout />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
-  <Route path="forms" element={<AdminFormSubmissions />} />
 }
 
 export default App;

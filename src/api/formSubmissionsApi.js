@@ -1,25 +1,23 @@
 // src/api/formSubmissionsApi.js
-
-import axiosClient from './axiosClient';  // ← Correction ici !
-
-const RESOURCE = '/formSubmissions';
-
-export async function createFormSubmission(payload) {
-  const res = await axiosClient.post(RESOURCE, payload);
-  return res.data;
-}
+import {
+  getFormSubmissions as _get,
+  createFormSubmission as _create,
+  updateFormSubmission as _update,
+  deleteFormSubmission as _delete,
+} from './localData';
 
 export async function getFormSubmissions() {
-  const res = await axiosClient.get(RESOURCE);
-  return res.data;
+  return _get();
+}
+
+export async function createFormSubmission(payload) {
+  return _create(payload);
 }
 
 export async function updateFormSubmission(id, payload) {
-  const res = await axiosClient.put(`${RESOURCE}/${id}`, payload);
-  return res.data;
+  return _update(id, payload);
 }
 
 export async function deleteFormSubmission(id) {
-  await axiosClient.delete(`${RESOURCE}/${id}`);
-  return true;
+  return _delete(id);
 }
