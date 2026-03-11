@@ -1,6 +1,7 @@
-// src/components/Hero/Hero.jsx
+// src/components/Accueil/Hero.jsx
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   FaEnvelope,
   FaMapMarkerAlt,
@@ -69,68 +70,40 @@ const Hero = () => {
         }
         .hero-bg-glow {
           position: absolute;
-          top: -180px;
-          right: -120px;
-          width: 700px;
-          height: 700px;
+          top: -180px; right: -120px;
+          width: 700px; height: 700px;
           background: radial-gradient(circle, rgba(13,148,136,0.07) 0%, transparent 65%);
           pointer-events: none;
         }
         .hero-grid {
-          position: relative;
-          z-index: 1;
-          max-width: 1140px;
-          margin: 0 auto;
+          position: relative; z-index: 1;
+          max-width: 1140px; margin: 0 auto;
           padding: 100px 32px 80px;
           display: grid;
           grid-template-columns: 1.15fr 0.85fr;
-          gap: 72px;
-          align-items: center;
-          width: 100%;
+          gap: 72px; align-items: center; width: 100%;
         }
         .hero-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          font-size: 11.5px;
-          font-weight: 700;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: #0d9488;
-          margin-bottom: 22px;
+          display: inline-flex; align-items: center; gap: 10px;
+          font-size: 11.5px; font-weight: 700; letter-spacing: 0.2em;
+          text-transform: uppercase; color: #0d9488; margin-bottom: 22px;
         }
         .hero-eyebrow::before {
-          content: '';
-          display: inline-block;
-          width: 32px;
-          height: 2px;
-          background: #0d9488;
-          border-radius: 2px;
+          content: ''; display: inline-block; width: 32px; height: 2px;
+          background: #0d9488; border-radius: 2px;
         }
         .hero-name {
           font-family: 'Plus Jakarta Sans', sans-serif;
           font-size: clamp(36px, 4.2vw, 56px);
-          font-weight: 800;
-          color: #0f172a;
-          line-height: 1.1;
-          letter-spacing: -1.5px;
-          margin-bottom: 16px;
+          font-weight: 800; color: #0f172a;
+          line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 16px;
         }
         .hero-name-first { display: block; }
         .hero-name-last { display: block; color: #0d9488; }
-        .hero-headline {
-          font-size: 17px;
-          color: #334155;
-          font-weight: 600;
-          margin-bottom: 6px;
-        }
+        .hero-headline { font-size: 17px; color: #334155; font-weight: 600; margin-bottom: 6px; }
         .hero-tagline {
-          font-size: 13.5px;
-          color: #94a3b8;
-          margin-bottom: 26px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
+          font-size: 13.5px; color: #94a3b8; margin-bottom: 26px;
+          display: flex; align-items: center; gap: 8px;
         }
         .tagline-dot {
           width: 6px; height: 6px; border-radius: 50%;
@@ -166,7 +139,11 @@ const Hero = () => {
           box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
         .btn-secondary:hover { border-color: #0d9488; color: #0d9488; transform: translateY(-2px); }
-        .contact-divider { height: 1px; background: linear-gradient(90deg, #e2e8f0, transparent); margin-bottom: 22px; }
+        .contact-divider {
+          height: 1px;
+          background: linear-gradient(90deg, #e2e8f0, transparent);
+          margin-bottom: 22px;
+        }
         .contact-label {
           font-size: 10.5px; font-weight: 700; letter-spacing: 0.15em;
           text-transform: uppercase; color: #cbd5e1; margin-bottom: 14px;
@@ -186,18 +163,15 @@ const Hero = () => {
         }
         .social-chip:hover { border-color: #0d9488; color: #0d9488; background: #f0fdf4; }
 
-        /* Right */
         .hero-right { display: flex; flex-direction: column; align-items: center; gap: 20px; }
         .photo-wrap { position: relative; width: 100%; max-width: 300px; }
         .photo-deco-tl {
-          position: absolute; top: -12px; left: -12px;
-          width: 72px; height: 72px;
+          position: absolute; top: -12px; left: -12px; width: 72px; height: 72px;
           border-top: 3px solid #0d9488; border-left: 3px solid #0d9488;
           border-radius: 4px 0 0 0; opacity: 0.45;
         }
         .photo-deco-br {
-          position: absolute; bottom: -12px; right: -12px;
-          width: 72px; height: 72px;
+          position: absolute; bottom: -12px; right: -12px; width: 72px; height: 72px;
           border-bottom: 3px solid #0d9488; border-right: 3px solid #0d9488;
           border-radius: 0 0 4px 0; opacity: 0.45;
         }
@@ -269,9 +243,10 @@ const Hero = () => {
                 <FaDownload style={{ fontSize: 12 }} />
                 Télécharger mon CV
               </a>
-              <a href="/contact" className="btn-secondary">
+              {/* ✅ Link au lieu de <a> pour éviter le 404 sur Vercel */}
+              <Link to="/contact" className="btn-secondary">
                 Me contacter →
-              </a>
+              </Link>
             </motion.div>
 
             <motion.div variants={itemVariants}>
