@@ -11,7 +11,7 @@ import {
   FaDownload,
 } from "react-icons/fa";
 import maryemPhoto from "../../assets/maryem.jpg";
-import cvFile from "../../assets/maryemCV.pdf";
+import cvFile from "../../assets/MaryemFakhfekhCV.pdf";
 
 const Hero = () => {
   const user = {
